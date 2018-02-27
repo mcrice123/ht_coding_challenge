@@ -7,6 +7,8 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
+import MenuItem from './MenuItem';
+
 class Menu extends Component {
 
 	constructor() {
@@ -45,6 +47,37 @@ class Menu extends Component {
   	this.setState({ menuItems: menuItems });
   }
 
+  showModItems(index, subIndex) {
+  	const menuItems = this.state.menuItems.map((item, i) => {
+  		if (item === null) {
+  			return {};
+  		}
+  		else if (i === index) {
+  			let newItem = item.childMenuItems.map((childItem, childIndex) => {
+  				if (childItem === null) {
+  					return {};
+  				}
+  				else if (childIndex === subIndex) {
+  					let newChildItem = {
+  						id: childItem.id,
+		  				checkDesc: childItem.checkDesc,
+		  				basePrice: childItem.basePrice,
+		  				modifierType: childItem.modifierType,
+		  				salesMode: childItem.salesMode,
+		  				childMenuItems: childItem.childMenuItems,
+		  				isOpen: !childItem.isOpen,
+  					};
+  					return newChildItem;
+  				}
+  				else return childItem;
+  			});
+  			return newItem;
+  		}
+  		else return item;
+  	});
+  	this.setState({ menuItems: menuItems });
+  }
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -53,12 +86,29 @@ class Menu extends Component {
 					this.state.menuItems && this.state.menuItems.map((item, i) => {
 						return (
 							<View key={item.id}>
-								<TouchableHighlight onPress={() => this.showGroupItems(i)}>
-									<Text style={styles.menuItem}>{item.checkDesc}</Text>
-								</TouchableHighlight>
+								<MenuItem onPress={() => this.showGroupItems(i)} style={styles.groupItem}>{item.checkDesc}</MenuItem>
 								{
 									item.isOpen && item.childMenuItems.map((child, index) => {
-										return <Text key={index}>{child.checkDesc}</Text>;
+										return (
+											<View key={child.id}>
+												<MenuItem onPress={() => this.showModItems(i, index)}>{child.checkDesc}</MenuItem>
+												{
+													child.isOpen && child.childMenuItems.map((mod, modIndex) => {
+														return (
+															<View key={mod.id}>
+															{
+																mod.childMenuItems.map((modChild, childIndex) => {
+																	return (
+																		<Text key={modChild.id}>{modChild.checkDesc}</Text>
+																	);
+																})
+															}
+															</View>
+														);
+													})
+												}
+											</View>
+										);
 									}) 
 								}
 							</View>
@@ -80,7 +130,7 @@ const styles = StyleSheet.create({
   title: {
   	fontSize: 28,
   },
-  menuItem: {
+  groupItem: {
   	color: '#000000',
   	fontSize: 20,
   },
