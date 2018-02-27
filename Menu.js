@@ -54,9 +54,13 @@ class Menu extends Component {
 						return (
 							<View key={item.id}>
 								<TouchableHighlight onPress={() => this.showGroupItems(i)}>
-									<Text>{item.checkDesc}</Text>
+									<Text style={styles.menuItem}>{item.checkDesc}</Text>
 								</TouchableHighlight>
-								{item.isOpen ? <Text>True</Text> : <Text>False</Text> }
+								{
+									item.isOpen && item.childMenuItems.map((child, index) => {
+										return <Text key={index}>{child.checkDesc}</Text>;
+									}) 
+								}
 							</View>
 						);
 					})
@@ -75,5 +79,9 @@ const styles = StyleSheet.create({
   },
   title: {
   	fontSize: 28,
-  }
+  },
+  menuItem: {
+  	color: '#000000',
+  	fontSize: 20,
+  },
 });
