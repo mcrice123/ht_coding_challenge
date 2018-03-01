@@ -47,35 +47,20 @@ class Menu extends Component {
   	this.setState({ menuItems: menuItems });
   }
 
-  showModItems(index, subIndex) {
-  	const menuItems = this.state.menuItems.map((item, i) => {
-  		if (item === null) {
-  			return {};
-  		}
-  		else if (i === index) {
-  			let newItem = item.childMenuItems.map((childItem, childIndex) => {
-  				if (childItem === null) {
-  					return {};
-  				}
-  				else if (childIndex === subIndex) {
-  					let newChildItem = {
-  						id: childItem.id,
-		  				checkDesc: childItem.checkDesc,
-		  				basePrice: childItem.basePrice,
-		  				modifierType: childItem.modifierType,
-		  				salesMode: childItem.salesMode,
-		  				childMenuItems: childItem.childMenuItems,
-		  				isOpen: !childItem.isOpen,
-  					};
-  					return newChildItem;
-  				}
-  				else return childItem;
-  			});
-  			return newItem;
-  		}
-  		else return item;
-  	});
-  	this.setState({ menuItems: menuItems });
+  showModItems(child) {
+  	return (
+      <View>
+      {
+        child.childMenuItems && child.childMenuItems.map((mod, modIndex) => {
+          return (
+            <View key={mod.id}>
+                  <Text key={mod.childMenuItems[0].id}>{mod.childMenuItems[0].checkDesc}</Text>
+            </View>
+          );
+        })
+      }
+      </View>
+    );
   }
 
 	render() {
@@ -93,19 +78,7 @@ class Menu extends Component {
 											<View key={child.id}>
 												<MenuItem onPress={() => this.showModItems(i, index)}>{child.checkDesc}</MenuItem>
 												{
-													child.isOpen && child.childMenuItems.map((mod, modIndex) => {
-														return (
-															<View key={mod.id}>
-															{
-																mod.childMenuItems.map((modChild, childIndex) => {
-																	return (
-																		<Text key={modChild.id}>{modChild.checkDesc}</Text>
-																	);
-																})
-															}
-															</View>
-														);
-													})
+													this.showModItems(child)
 												}
 											</View>
 										);
