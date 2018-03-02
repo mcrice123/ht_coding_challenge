@@ -54,7 +54,11 @@ class Menu extends Component {
         child.childMenuItems && child.childMenuItems.map((mod, modIndex) => {
           return (
             <TouchableHighlight key={mod.id} onPress={() => this.props.selectMod(item, mod)}>
-                  <Text key={mod.id}>{mod.checkDesc}</Text>
+                  {
+                    mod.basePrice ? 
+                    <Text key={mod.id}>{mod.checkDesc} - ${mod.basePrice}</Text> :
+                    <Text key={mod.id}>{mod.checkDesc}</Text>
+                  }
             </TouchableHighlight>
           );
         })
@@ -78,7 +82,7 @@ class Menu extends Component {
 										return (
 											<View key={child.id}>
                         { /* Display 2nd-level Item */}
-												<MenuItem onPress={() => this.props.selectItem(child)} style={styles.menuItem}>{child.checkDesc}</MenuItem>
+												<MenuItem onPress={() => this.props.selectItem(child)} style={styles.menuItem}>{child.checkDesc} - ${child.basePrice}</MenuItem>
 												{
                             // NOT displaying 3rd-level items, but passing them to function
 													  child.childMenuItems && this.showModItems(child, child.childMenuItems[0])
