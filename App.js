@@ -26,6 +26,7 @@ export default class App extends Component<Props> {
     this.selectMod = this.selectMod.bind(this);
   }
 
+  // Function to select item without modifier
   selectItem(obj) {
     let selected = this.state.selected;
     let itemExists = false;
@@ -41,12 +42,14 @@ export default class App extends Component<Props> {
         basePrice: obj.basePrice,
         modifierType: obj.modifierType,
         salesMode: obj.salesMode,
+        selectedMods: [],
       }
       selected.push(myObject);
       this.setState({ selected: selected });
     }
   }
 
+  // Function to select modifier
   selectMod(obj, mod) {
     let selected = this.state.selected;
     let itemExists = false;
@@ -54,19 +57,14 @@ export default class App extends Component<Props> {
     let newSelected = selected.map((myItem, i) => {
       if (myItem.id === obj.id) {
         itemExists = true;
-        if (myItem.selectedMod && (myItem.selectedMod.id === mod.id)) {
+        let myMods = this.findMod(mod, myItem.selectedMods);
+        if (myMods.length === 0) { // if returned array is empty, no further action needed
           modExists = true;
           return myItem;
         }
         else {
           let newObj = myItem;
-          newObj.selectedMod = {
-            id: mod.id,
-            checkDesc: mod.checkDesc,
-            basePrice: mod.basePrice,
-            modifierType: mod.modifierType,
-            salesMode: mod.salesMode,
-          }
+          newObj.selectedMods = myMods;
           return newObj;
         }
       }
@@ -82,11 +80,29 @@ export default class App extends Component<Props> {
         basePrice: obj.basePrice,
         modifierType: obj.modifierType,
         salesMode: obj.salesMode,
-        selectedMod: mod,
+        selectedMods: [ mod ],
       }
       selected.push(newItem);
       this.setState({ selected: selected });
     }
+  }
+
+  findMod(myMod, mods) {
+    let exists = false;
+    mods.map((mod, i) => {
+      if (myMod.id === mod.id) {
+        exists = true;
+      }
+    });
+    let finalArray = [];
+    if (exists) {
+      finalArray = [];
+    }
+    else { 
+      mods.push(myMod);
+      finalArray = mods;
+    }
+    return finalArray;
   }
 
   render() {

@@ -15,7 +15,11 @@ const Selected = ({ items }) => {
 					return (
             <View key={i}>
               <Text style={styles.menuItem}>{item.checkDesc}</Text>
-              { item.selectedMod && <Text>{item.selectedMod.checkDesc}</Text> }
+              { 
+                item.selectedMods && item.selectedMods.map((mod, i) => {
+                return <Text key={i}>{mod.checkDesc}</Text>;
+                })
+              }
             </View>
           );
 				})
