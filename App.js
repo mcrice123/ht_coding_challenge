@@ -21,6 +21,22 @@ export default class App extends Component<Props> {
     super();
 
     this.state = { selected: [] };
+
+    this.selectItem = this.selectItem.bind(this);
+  }
+
+  selectItem(obj) {
+    let selected = this.state.selected;
+    let itemExists = false;
+    selected.map((myItem, i) => {
+      if (myItem.id === obj.id) {
+        itemExists = true;
+      }
+    });
+    if (!itemExists) {
+      selected.push(obj);
+      this.setState({ selected: selected });
+    }
   }
 
   render() {
@@ -28,7 +44,7 @@ export default class App extends Component<Props> {
     return (
       <View style={styles.container}>
         <Selected items={this.state.selected} />
-        <Menu menuItems={games.menuItems} />
+        <Menu menuItems={games.menuItems} selectItem={this.selectItem} />
       </View>
     );
   }

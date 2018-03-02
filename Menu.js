@@ -78,7 +78,7 @@ class Menu extends Component {
 										return (
 											<View key={child.id}>
                         { /* Display 2nd-level Item */}
-												<MenuItem onPress={() => this.showModItems(i, index)} style={styles.menuItem}>{child.checkDesc}</MenuItem>
+												<MenuItem onPress={() => this.props.selectItem(child)} style={styles.menuItem}>{child.checkDesc}</MenuItem>
 												{
                             // NOT displaying 3rd-level items, but passing them to function
 													  child.childMenuItems && this.showModItems(child.childMenuItems[0])

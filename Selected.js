@@ -12,7 +12,7 @@ const Selected = ({ items }) => {
 			<Text style={styles.title}>Selected Menu</Text>
 			{
 				items.map((item, i) => {
-					return <Text key={i}>{item.id}</Text>;
+					return <Text key={i}>{item.checkDesc}</Text>;
 				})
 			}
 		</View>
