@@ -54,7 +54,7 @@ class Menu extends Component {
         child.childMenuItems && child.childMenuItems.map((mod, modIndex) => {
           return (
             <View key={mod.id}>
-                  <Text key={mod.childMenuItems[0].id}>{mod.childMenuItems[0].checkDesc}</Text>
+                  <Text key={mod.id}>{mod.checkDesc}</Text>
             </View>
           );
         })
@@ -71,14 +71,17 @@ class Menu extends Component {
 					this.state.menuItems && this.state.menuItems.map((item, i) => {
 						return (
 							<View key={item.id}>
-								<MenuItem onPress={() => this.showGroupItems(i)} style={styles.groupItem}>{item.checkDesc}</MenuItem>
+								{ /* Display 1st-level Item */}
+                <MenuItem onPress={() => this.showGroupItems(i)} style={styles.groupItem}>{item.checkDesc}</MenuItem>
 								{
 									item.isOpen && item.childMenuItems.map((child, index) => {
 										return (
 											<View key={child.id}>
-												<MenuItem onPress={() => this.showModItems(i, index)}>{child.checkDesc}</MenuItem>
+                        { /* Display 2nd-level Item */}
+												<MenuItem onPress={() => this.showModItems(i, index)} style={styles.menuItem}>{child.checkDesc}</MenuItem>
 												{
-													this.showModItems(child)
+                            // NOT displaying 3rd-level items, but passing them to function
+													  child.childMenuItems && this.showModItems(child.childMenuItems[0])
 												}
 											</View>
 										);
@@ -107,4 +110,7 @@ const styles = StyleSheet.create({
   	color: '#000000',
   	fontSize: 20,
   },
+  menuItem: {
+    fontWeight: '700',
+  }
 });
