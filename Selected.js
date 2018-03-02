@@ -12,7 +12,12 @@ const Selected = ({ items }) => {
 			<Text style={styles.title}>Selected Menu</Text>
 			{
 				items.map((item, i) => {
-					return <Text key={i}>{item.checkDesc}</Text>;
+					return (
+            <View key={i}>
+              <Text style={styles.menuItem}>{item.checkDesc}</Text>
+              { item.selectedMod && <Text>{item.selectedMod.checkDesc}</Text> }
+            </View>
+          );
 				})
 			}
 		</View>
@@ -32,5 +37,8 @@ const styles = StyleSheet.create({
   },
   title: {
   	fontSize: 28,
-  }
+  },
+  menuItem: {
+    fontWeight: '700',
+  },
 });

@@ -47,15 +47,15 @@ class Menu extends Component {
   	this.setState({ menuItems: menuItems });
   }
 
-  showModItems(child) {
+  showModItems(item, child) {
   	return (
       <View>
       {
         child.childMenuItems && child.childMenuItems.map((mod, modIndex) => {
           return (
-            <View key={mod.id}>
+            <TouchableHighlight key={mod.id} onPress={() => this.props.selectMod(item, mod)}>
                   <Text key={mod.id}>{mod.checkDesc}</Text>
-            </View>
+            </TouchableHighlight>
           );
         })
       }
@@ -81,7 +81,7 @@ class Menu extends Component {
 												<MenuItem onPress={() => this.props.selectItem(child)} style={styles.menuItem}>{child.checkDesc}</MenuItem>
 												{
                             // NOT displaying 3rd-level items, but passing them to function
-													  child.childMenuItems && this.showModItems(child.childMenuItems[0])
+													  child.childMenuItems && this.showModItems(child, child.childMenuItems[0])
 												}
 											</View>
 										);
